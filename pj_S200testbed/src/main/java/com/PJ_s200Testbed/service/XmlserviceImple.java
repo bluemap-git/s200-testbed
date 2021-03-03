@@ -3,6 +3,7 @@ package com.PJ_s200Testbed.service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -489,14 +490,14 @@ public class XmlserviceImple implements Xmlservice {
 	}
 
 	@Override
-	public boolean deleteNode(String path, List<Integer> idList) {
+	public boolean deleteNode(String path, ArrayList<List<Integer>> idList) {
 
 		try {
 			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 			DocumentBuilder parser = f.newDocumentBuilder();
 			Document document = parser.parse(path);
 			XPath xpath = XPathFactory.newInstance().newXPath();
-			for (Integer id : idList) {
+			for (List<Integer> id : idList) {
 				Node col2 = (Node) xpath.evaluate("//*[@id='" + id + "']", document, XPathConstants.NODE);
 				Node pCol = col2.getParentNode();
 				Node pNode = pCol.getParentNode();
@@ -891,4 +892,6 @@ public class XmlserviceImple implements Xmlservice {
 	public int insertUploadData(UploadData ud) {
 		return sDao.insertUploadData(ud);
 	}
+	
+	
 }

@@ -257,8 +257,9 @@ function valiinput() {
 }
 
 function featuredelarr() {
+	var status = [];
     $('input[name=featureone]:checked').each(function () {
-        var status = $(this).parent().parent().find('td:eq(2)').text();
+    	status = ( $(this).parent().parent().find('td:eq(2)').text());
         featureDelArray.push(status);
     });
 }

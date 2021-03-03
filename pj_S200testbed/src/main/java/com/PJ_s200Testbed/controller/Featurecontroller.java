@@ -105,17 +105,20 @@ public class Featurecontroller {
     	
 	    HashSet < Integer > tArr = new HashSet<Integer>(featureDelArray);
 	    featureDelArray = new ArrayList<Integer>(tArr);
-	    DataSet ds = fService.selectDataset(featureDelArray.get(0));
-	    String dsName = ds.ds_idx + ". " + ds.id;
+	    // [1,2,3] [4,5,6] 
+	    ArrayList<List<Integer>> delarray = fService.childarray(featureDelArray);
 	    
-	    if (dsName != null && !dsName.equals("")) {
-	        String path = request.getSession().getServletContext().getRealPath("/") + "rData/" + dsName + ".gml";
-	        File gmlFile = new File(path);
-	        if (!gmlFile.exists())
-	            return;
-	        xService.deleteNode(path, featureDelArray);
-	    }
-	    fService.featureDelete(featureDelArray);
+		DataSet ds = fService.selectDataset(featureDelArray.get(0));
+		String dsName = ds.ds_idx + ". " + ds.id;
+		if (dsName != null && !dsName.equals("")) {
+			String path = request.getSession().getServletContext().getRealPath("/") + "rData/" + dsName + ".gml";
+			File gmlFile = new File(path);
+			if (!gmlFile.exists())
+				return;
+			xService.deleteNode(path, delarray);
+		}
+		fService.featureDelete(featureDelArray);
+		 
 }
 
     @ResponseBody

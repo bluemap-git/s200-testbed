@@ -76,7 +76,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 	</select>
-
 	<select id="selectAssociation" resultType="Integer">
 		select xhref from
 		association where f_idx = #{featureid}
@@ -92,8 +91,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select featuretype
 		from feature where f_idx = #{featureid}
 	</select>
-
-
+	
+	<select id="selectchild" resultType="Integer">
+		
+			select distinct xhref from association where f_idx = #{test} or xhref = #{test}
+		
+	</select>
 	<sql id="featuretotal">
 		(select f.*, a.value as name from ( select distinct f.* from attribute
 		a, (select distinct

@@ -11,6 +11,9 @@ import com.PJ_s200Testbed.model.DataSet;
 
 public interface FeatureDAO {
 
+	int[][] selectchild = null;
+
+
 	public int countArticle(@Param("map") Map<String, Object> map);
 	
 	
@@ -36,4 +39,7 @@ public interface FeatureDAO {
 	
 
 	public int selectFeatureHref(@Param("featureid")int featureid);
+
+
+	public List<Integer> selectchild(@Param("test") int test);
 }

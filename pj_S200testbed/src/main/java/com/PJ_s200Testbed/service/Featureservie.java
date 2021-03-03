@@ -1,5 +1,6 @@
 package com.PJ_s200Testbed.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,4 +22,5 @@ public interface Featureservie {
 	public List<Integer> selectAssociation(int featureid);
 	public String selectFeatureType(int featureid);
 	public int selectFeatureHref(int featureid);
+	public  ArrayList<List<Integer>>  childarray(List<Integer> featureDelArray);
 }

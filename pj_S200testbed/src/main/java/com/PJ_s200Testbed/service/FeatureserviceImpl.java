@@ -1,5 +1,6 @@
 package com.PJ_s200Testbed.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,5 +96,21 @@ public class FeatureserviceImpl implements Featureservie {
 	
 	public int selectFeatureHref(int featureid) {
 		return fDao.selectFeatureHref(featureid);
+	}
+
+	@Override
+	public ArrayList<List<Integer>> childarray(List<Integer> featureDelArray) {
+		
+		ArrayList<List<Integer>> mGroupList = new ArrayList<List<Integer>>();
+		for(int i=0; i<=featureDelArray.size()-1 ;i++) {
+			if(featureDelArray.size() != 0) {
+				int test = featureDelArray.get(i);
+				List<Integer> childlist = fDao.selectchild(test);
+				mGroupList.add(childlist);
+			}
+		}
+		
+		return mGroupList;
+		//return fDao.selectchild(featureDelArray);
 	}
 }
