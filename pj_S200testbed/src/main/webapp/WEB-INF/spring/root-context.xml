@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver"></property>
+		<property name="url" value="jdbc:postgresql://192.168.0.204:5432/postgres" />
+		<property name="username" value="aton" />
+		<property name="password" value="testpswd" />
+
+	</bean>
+	
+	<!-- SqlSessionFactory 객체 주입 -->
+	<!-- 마이바이티스를 어떻게 실행할 것인지  -->
+	<!-- resources/mybatis-config.xml 파일이 필수  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>
+		<!-- mappers/**/*Mapper.xml : mappers 폴더 안에  **maper.xml 로 되는 파일이 있어야한다 -->
+		<!-- /**/에는 대소문자 상관 없지만 /*Mapper이름은 그대로 사용해야 한다  -->
+	</bean>
+	<!-- SqlSession 객체 주입 -->
+	<!-- mybatis의 mapper.xml과 DAO를 구분해서 사용하는 경우(설정을 XML로 하는 경우, JAVA 방식을 사용하지 않는 경우)
+	     SqlSessionTempleate를 사용해야함.
+	     mybatis-spring 라이브러리에서 SqlSessionTemplate 클래스를 제공하여
+	     DAO를 활용하여 DB의 연결과 종료 및 기본적인 트랜잭션의 관리나 쓰레드 처리의 안정성 등을 보장 해줌 -->
+	<!-- sqlSessionFactory를 생성자로 주입해서 설정 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 트랜잭션 관련 설정 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 트랜잭션 관련 어노테이션을 자동 인식하는 옵션 -->
+	<tx:annotation-driven />
+		
+		
+</beans>

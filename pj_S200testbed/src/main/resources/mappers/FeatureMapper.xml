@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PJ_s200Testbed.persistence.FeatureDAO">
+
+	<select id="selectAttribute"
+		resultType="com.PJ_s200Testbed.model.Attribute">
+
+		select * from attribute where a_idx = #{attributeid}
+
+	</select>
+
+	<select id="selectDataset"
+		resultType="com.PJ_s200Testbed.model.DataSet">
+		select d.* from feature
+		f, dataset d where f.ds_idx =
+		d.ds_idx and f_idx =
+		#{featureid}
+	</select>
+
+	<select id="featureDetail" resultType="FeatureDTO">
+
+		select name, value, a_idx
+		from attribute where f_idx = #{featureid} and
+		value != '';
+
+	</select>
+
+	<delete id="featureDelete">
+
+		<foreach collection="featureDelArray" item="item">
+			delete from feature
+			where f_idx = #{item};
+		</foreach>
+	</delete>
+
+
+	<select id="countArticle" resultType="Integer">
+		select count (*) from (
+
+		<include refid="featuretotal" />
+
+		) a
+
+	</select>
+	<select id="featureselect" resultType="FeatureDTO">
+		<include refid="paging_header" />
+		<include refid="featuretotal" />
+		<include refid="paging_footer" />
+	</select>
+	<select id="featuresearch" resultType="FeatureDTO">
+		select
+		st_x(ST_Transform(geom, 4326)) x,
+		st_y(ST_Transform(geom, 4326)) y,
+		a.value
+		from feature f join
+		(select
+		distinct p.f_idx,
+		p.geom,
+		a.value
+		from
+		point p left outer join
+		(select f_idx, value from
+		attribute
+		where
+		(name =
+		'colour' and attributetype like '%Light%') or (name like
+		'%Shape%'))
+		a
+		on p.f_idx = a.f_idx)
+		a on f.f_idx = a.f_idx
+		where
+		f.ds_idx = #{map.num}
+		and f.f_idx = #{map.featureid};
+
+
+	</select>
+
+	<select id="selectAssociation" resultType="Integer">
+		select xhref from
+		association where f_idx = #{featureid}
+	</select>
+
+	<select id="selectFeatureHref" resultType="Integer">
+		select
+		COALESCE((select xhref from association where f_idx = #{featureid} and
+		xrole = 'parent'), -1)
+	</select>
+
+	<select id="selectFeatureType" resultType="String">
+		select featuretype
+		from feature where f_idx = #{featureid}
+	</select>
+
+
+	<sql id="featuretotal">
+		(select f.*, a.value as name from ( select distinct f.* from attribute
+		a, (select distinct
+		f.f_idx,
+		featuretype,
+		st_x(ST_Transform(geom, 4326)) x,
+		st_y(ST_Transform(geom, 4326)) y,
+		a.value
+		from feature f join
+		(select
+		distinct p.f_idx,
+		p.geom,
+		a.value
+		<choose>
+			<when test="map.keyword !=''">
+				from point p join
+				(select
+				f_idx,
+				value,
+				name
+				from
+				attribute where
+				value LIKE '%${map.keyword}%')
+
+			</when>
+			<otherwise>
+				from point p left outer join
+				(select
+				f_idx,
+				value
+				from
+				attribute where
+				(name = 'colour' and attributetype like '%Light%')
+				or
+				(name like '%Shape%'))
+			</otherwise>
+		</choose>
+		a on p.f_idx = a.f_idx)
+
+
+		a on f.f_idx = a.f_idx
+		where
+		f.ds_idx =
+		#{map.num} and (f.featuretype like '%Buoy%' or f.featuretype like
+		'%Beacon%' or f.featuretype like '%Landmark%')
+		) f
+		where f.f_idx = a.f_idx) f left outer join (select * from attribute where
+		name = 'objectName') a on f.f_idx = a.f_idx order by f.f_idx)
+	</sql>
+	<sql id="paging_header">
+		select *
+		from (
+		select ( row_number() over()) as rownum, C.*
+		FROM(
+	</sql>
+	<sql id="paging_footer">
+		) C
+		) x where rownum between #{map.start} AND #{map.end}
+	</sql>
+
+
+	<update id="DeatilUpdate">
+
+		UPDATE attribute SET
+		value= #{map.value} where a_idx =
+		${map.FeaturePk};
+
+	</update>
+</mapper>

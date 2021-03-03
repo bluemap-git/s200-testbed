@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+font-family: 'Open Sans', sans-serif;
+
+
+
+
+.clicked_menu{
+	
+	color: tomato;
+}
+
+
+.on_off:hover {
+	color: tomato;
+}
+
+.table.dataTable{
+ 
+ font-size: 12px;
+ }
+
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: table-row;
+}
+
+.table_top {
+	height: 444px;
+	overflow: auto;
+	font-size: 12px;
+}
+
+.table_top::-webkit-scrollbar {
+	display: none;
+}
+
+.featur_view_btn {
+	width: 53px;
+	cursor: pointer;
+}
+
+.featur_input_btn {
+	cursor: pointer;
+}
+
+.active {
+	color: tomato;
+}
+
+table.dataTable td {
+  padding: 1px;
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+ <typeAliases>
+ 	 <typeAlias type="com.PJ_s200Testbed.domain.DatasetDTO"
+	alias="DatasetDTO"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.FeatureDTO"
+		alias="FeatureDTO"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.GetFeatureDTO"
+		alias="GetFeatureDTO"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.SimpleAttribute"
+		alias="SimpleAttribute"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.ListedValue"
+		alias="ListedValue"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.ComplexAttribute"
+		alias="ComplexAttribute"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.ComplexBinding"
+		alias="ComplexBinding"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.ComplexPermittedValue"
+		alias="ComplexPermittedValue"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.Role" alias="Role"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.InformationAssociation"
+		alias="InformationAssociation"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.FeatureAssociation"
+		alias="FeatureAssociation"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.InformationType"
+		alias="InformationType"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.InformationBinding"
+		alias="InformationBinding"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.InformationPermittedValue"
+		alias="InformationPermittedValue"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.FeatureType"
+		alias="FeatureType"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.FeaturePermittedPrimitive"
+		alias="FeaturePermittedPrimitive"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.AttributeBinding"
+		alias="AttributeBinding"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.FeaturePermittedValue"
+		alias="FeaturePermittedValue"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.FeatureBinding"
+		alias="FeatureBinding"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.DatasetStructureInformation"
+		alias="DatasetStructureInformation"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.DatasetIdentificationInformation"
+		alias="DatasetIdentificationInformation"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.BoundedBy"
+		alias="BoundedBy"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.Feature"
+		alias="Feature"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.Association"
+		alias="Association"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.Attribute"
+		alias="Attribute"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.SaveOption"
+		alias="SaveOption"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.ExchangeCatalogueAttribute"
+		alias="ExchangeCatalogueAttribute"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.SimpleA"
+		alias="SimpleA"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.ComplexA"
+		alias="ComplexA"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.ComplexChild"
+		alias="ComplexChild"></typeAlias>
+	<typeAlias
+		type="com.PJ_s200Testbed.domain.ComplexChildAttribute"
+		alias="ComplexChildAttribute"></typeAlias>
+	<typeAlias type="com.PJ_s200Testbed.domain.Boundary"
+		alias="Boundary"></typeAlias>		
+	<typeAlias type="com.PJ_s200Testbed.domain.FitBounds"
+		alias="FitBounds"></typeAlias>
+ </typeAliases>
+
+</configuration>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet href="SVGStyle.css" type="text/css"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="6.95mm" height="6.8mm" viewBox="-1.15 -1.12 6.95 6.8">
+  <title>LIGHTS113</title>
+  <desc>pattern of symbol</desc>
+  <metadata>
+    <S100SVG xmlns:iho="http://www.iho.int/SVGMetadata">
+      <Description publisher="IHB" creationDate="2018-12-18" source="S52Preslib4.0" format="S100SVG" version="0.1" />
+    </S100SVG>
+  </metadata>
+  <rect style="stroke:black;stroke-width:0.32; display:none;" fill="none" x="-1.15" y="5.68" height="6.8" width="6.95" />
+  <rect style="stroke:blue; stroke-width:0.32; display:none;" fill="none" x="-1.15" y="-1.12" height="6.8" width="6.95" />
+  <path d=" M -0.15,-0.09 L 2.82,4.23 L 3.09,4.5 L 3.45,4.65 L 3.81,4.68 L 4.11,4.59 L 4.41,4.44 L 4.62,4.2 L 4.74,3.96 L 4.8,3.72 L 4.8,3.48 L 4.74,3.18 L 4.53,2.88 L 4.23,2.61 L -0.12,-0.12" style="stroke-linecap:round;stroke-linejoin:round; fill:none; stroke:#000000; stroke-width:0.64;"/>
+  <path d=" M -0.15,-0.09 L 2.82,4.23 L 3.09,4.5 L 3.45,4.65 L 3.81,4.68 L 4.11,4.59 L 4.41,4.44 L 4.62,4.2 L 4.74,3.96 L 4.8,3.72 L 4.8,3.48 L 4.74,3.18 L 4.53,2.88 L 4.23,2.61 L -0.12,-0.12" style="fill:#EA5471; stroke-width:0.32;" />
+</svg>

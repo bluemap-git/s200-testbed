@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PJ_s200Testbed.persistence.ExchangeDao">
+
+	<select id="getExchangeIDX" resultType="int">
+		SELECT COALESCE(max(EC_PK),0) from ExchangeCatalogue;
+	</select>
+	
+	<insert id="insertExchangeCatalogue">
+		INSERT INTO ExchangeCatalogue (EC_PK, Title) values (${ec.ec_pk}, '${ec.title}');
+	</insert>
+	
+	<insert id="insertExchangeCatalogueAttribute" >
+		INSERT INTO ExchangeCatalogueAttribute (EC_FK, Title, Value) values 
+		(${eca.ec_fk}, 
+		'${eca.title}', 
+		'${eca.value}');
+	</insert>
+	
+	<insert id="insertSimpleA" >
+		INSERT INTO SimpleA (EC_FK, Title, Value) values 
+		(${simple.ec_fk}, 
+		'${simple.title}', 
+		'${simple.value}');
+	</insert>
+	
+	<select id="getComplexaIDX" resultType="int">
+		SELECT COALESCE(max(C_PK), 0) from ComplexA;
+	</select>
+	
+	<insert id="insertComplexA" >
+		INSERT INTO ComplexA (C_PK, EC_FK, Title) 
+		values 
+		(${Complex.c_pk}, 
+		${Complex.ec_fk}, 
+		'${Complex.title}');
+	</insert>
+	
+	<insert id="insertComplexGeometry" >
+		INSERT INTO ComplexGeometry (CC_FK, Geom) values (${cc_fk}, ST_GeomFromText('POLYGON((${cg}))', 4326));
+	</insert>
+	<select id="getComplexChildIDX" resultType="int">
+		SELECT COALESCE(max(cc_pk), 0) from ComplexChild;
+	</select>
+	
+	<insert id="insertComplexChild1">
+		INSERT INTO ComplexChild (CC_PK, C_FK, CC_FK, Title, Value) 
+		values (${cc.cc_pk}, 
+		${cc.c_fk}, 
+		null, 
+		'${cc.title}', 
+		'${cc.value}');
+	</insert>
+	
+	<insert id="insertComplexChild2" >
+		INSERT INTO ComplexChild (CC_PK, C_FK, CC_FK, Title, Value) 
+		values (${cc.cc_pk}, 
+		${cc.c_fk}, 
+		${cc.cc_fk}, 
+		'${cc.title}', 
+		'${cc.value}');
+	</insert>
+	<insert id="insertComplexChildAttribute" >
+		INSERT INTO ComplexChildAttribute (CC_FK, Title, Value) 
+		values (${cca.cc_fk}, 
+		'${cca.title}', 
+		'${cca.value}');
+	</insert>
+	
+	<select id="getExchangeCatalogueTitle" resultType="String">
+		Select Title From ExchangeCatalogue where ec_pk = ${ec_pk}
+	</select>
+	<select id="getExchangeCatalogueAttribute"  resultType="ExchangeCatalogueAttribute">
+		Select * From ExchangeCatalogueAttribute where ec_fk = ${ec_fk}
+	</select>
+	
+	<select id="getSimpleA" resultType="SimpleA">
+		Select * From SimpleA where ec_fk = ${ec_fk}
+	</select>
+	
+	<select id="getComplexA"  resultType="ComplexA">
+		Select * From ComplexA where ec_fk = ${ec_fk}
+	</select>
+	
+	<select id="getComplexChildRoot" resultType="ComplexChild">
+		Select * From ComplexChild where c_fk = ${c_fk} and title != '#text' and cc_fk is null;
+	</select>
+	
+	<select id="getComplexChildAttribute"  resultType="ComplexChildAttribute">
+		Select * From ComplexChildAttribute where cc_fk = ${cc_fk};
+	</select>
+	
+	<select id="getBoundary" resultType="Boundary">
+		Select st_xmin(geom) as minX, st_ymin(geom) as minY, st_xmax(geom) as maxX, st_ymax(geom) as miaY From complexGeometry where cc_fk = ${cc_fk};
+	</select>
+	
+	<select id="getComplexChild" resultType="ComplexChild">
+		Select * From ComplexChild where cc_fk = ${c_fk};
+	</select>
+
+</mapper>

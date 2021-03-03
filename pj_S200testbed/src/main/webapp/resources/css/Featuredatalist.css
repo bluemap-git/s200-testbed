@@ -1,0 +1,380 @@
+@charset "UTF-8";
+
+ div.dataTables_paginate {text-align: center}
+
+div.dataTables_scrollBod border{ border-bottom: 0;
+  border-style: none;}
+  
+  
+  #feature_detail tbody {
+      word-break: break-all
+  }
+ 
+ 
+  
+  .buoy_shape{
+   display: flex;
+   margin-bottom: 10px;
+  }
+  
+  
+  .beacon_shape{
+  display: flex;
+  margin-bottom: 10px;
+  }
+  
+  
+  
+  .xywrap{
+  width: 346px;
+  margin: auto;
+  
+  }
+  
+  tbody {
+  
+  font-size: 12px;
+  }
+  
+  .mapcss{
+  font-size: 22px;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  
+  }
+  
+  .mapcss:hover{
+  	
+  	color: tomato;
+  
+  }
+  
+  .mapcss i {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  
+  
+  .validation_gml{
+  	width: 75px;
+	height: 35px;
+	cursor: pointer;
+	background: none;
+	outline: none;
+	border: solid 1px;
+	border-radius: 4px;
+  
+  }
+.validation_gml:hover {
+	background: tomato;
+	color: white;
+}  
+  
+  
+  .featurepage_btn{
+
+    outline: none;
+    border: solid 1px;
+    border-radius: 4px;
+    width: 23px;
+}
+
+ .featurepage_btn:hover{
+	color:#fff;
+	border:1px solid #f40;
+	background-color:#f40;
+	cursor: pointer;
+} 
+
+font-family: 'Open Sans', sans-serif;
+
+
+
+.featureclose{
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	
+}
+
+.featureclose:hover{
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+
+
+
+.feature_btn_wrap {
+	margin-bottom: 5px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.feature_btn_wrap_submit {
+	margin-bottom: 5px;
+	display: flex;
+	justify-content: center;
+}
+
+.feature_del_btn {
+	width: 75px;
+	height: 35px;
+	cursor: pointer;
+	background: none;
+	outline: none;
+	border: solid 1px;
+	border-radius: 4px;
+}
+
+.feature_del_btn:hover {
+	background: tomato;
+	color: white;
+}
+
+.feature_create_btn {
+	display: flex;
+	justify-content: space-around;
+	width: 346px;
+}
+
+#feature_detail_wrapper {
+	height: 312px;
+	
+}
+
+#feature_create_btn {
+	width: 75px;
+	height: 35px;
+	cursor: pointer;
+	background: none;
+	outline: none;
+	border: solid 1px;
+	border-radius: 4px;
+}
+
+#feature_create_btn:hover {
+	background: skyblue;
+	color: white;
+}
+
+#create_clear {
+	width: 75px;
+	height: 35px;
+	cursor: pointer;
+	background: none;
+	outline: none;
+	border: solid 1px;
+	border-radius: 4px;
+}
+
+#create_clear:hover {
+	background: #7CB9DE;
+	color: white;
+}
+.lighthouse_pattern{
+	
+	margin-bottom: 10px;
+}
+
+.ligth_hosbox{
+	width: 177px;
+    text-align: center;
+}
+
+
+.Beacon_MRN{
+	display: none;
+	margin-bottom: 10px;
+}
+
+#visually{
+	margin-left: 11px;
+    margin-bottom: 10px;
+	
+}
+
+.type_box_select {
+	display: block;
+}
+
+/* The Modal (background) */
+#myModal {
+	display: none; 
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.light_hous_Color{
+	display: flex;
+	margin-bottom: 10px;
+	
+}
+
+.loght_color{
+	display: flex;
+	margin-bottom: 10px;
+}
+
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 500px;
+	position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 700px;
+}
+
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.create_feature_warp {
+	height: 600px;
+}
+
+.new_name {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.new_Type {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.div_wrap_box {
+	width: 177px;
+	text-align: center;
+}
+
+.new_Postion {
+	display: flex;
+	margin-bottom: 5px;
+}
+
+.new_lat input {
+	width: 20%;
+}
+
+.new_lat {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.new_Lot input {
+	width: 20%
+}
+
+.new_Lot {
+	display: flex;
+	justify-content: space-between;
+}
+
+.div_Positon_box {
+	width: 160px;
+	text-align: center;
+}
+
+.new_Lot {
+	display: flex;
+	justify-content: space-between;
+}
+
+.new_Light_characteristic {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.Signal_Group {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.new_Color {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.Period {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.new_Landmark_Color {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.Installation_Date {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.Installation_Date {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.AtoN_MRN {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.Buoy_MRN {
+	
+	margin-bottom: 10px;
+}
+
+.Topmark_MRN {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.Light_MRN {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.postion_selection {
+	width: 286px;
+}
+
+table.dataTable thead th{
+	padding: 1px;
+	
+}
+
+.features_search_div{
+    margin: auto;
+}
+

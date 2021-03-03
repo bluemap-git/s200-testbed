@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PJ_s200Testbed.persistence.CatalogueDAO">
+	<select id="SelectStr" resultType="String">
+		select 'AAA';
+	</select>
+
+	<select id="selectBoundedBy"
+		resultType="com.PJ_s200Testbed.model.BoundedBy">
+		select srsname, st_x(st_centroid(st_transform(lowercorner,
+		26910))) as
+		LX, st_y(st_centroid(st_transform(lowercorner, 26910))) as
+		LY,
+		st_x(st_centroid(st_transform(uppercorner, 26910))) as UX,
+		st_y(st_centroid(st_transform(uppercorner, 26910))) as UY from
+		boundedby where ds_idx=${value}
+	</select>
+
+	<select id="selectDatasetIdentificationInformation"
+
+		resultType="com.PJ_s200Testbed.model.DatasetIdentificationInformation">
+		select * from
+		datasetidentificationinformation where ds_idx
+		= ${value}
+	</select>
+
+	<select id="selectDatasetStructureInformation"
+
+		resultType="com.PJ_s200Testbed.model.DatasetStructureInformation">
+		select * from
+		datasetstructureinformation where ds_idx =
+		${value}
+	</select>
+
+	<select id="selectFeature"
+		resultType="com.PJ_s200Testbed.model.Feature">
+		select * from feature where ds_idx = ${value}
+	</select>
+	<select id="selectFeatureOne"
+		resultType="com.PJ_s200Testbed.model.Feature">
+		select * from feature where f_idx = ${value}
+	</select>
+	<select id="selectAssociation"
+		resultType="com.PJ_s200Testbed.model.Association">
+		select * from association where f_idx = ${value}
+	</select>
+
+	<select id="selectAttribute"
+		resultType="com.PJ_s200Testbed.model.Attribute">
+		select * from attribute where f_idx = ${value}
+	</select>
+
+	<select id="selectPoint" resultType="String">
+		select
+		ST_AsText(st_transform(geom, 4326)) as geom from
+		point where f_idx =
+		${value}
+	</select>
+
+	<select id="selectPolygon" resultType="String">
+		select
+		ST_AsText(st_transform(geom, 4326)) as geom from
+		polygon where
+		f_idx =
+		${value}
+	</select>
+
+	<select id="selectDataSetName" resultType="String">
+		select id from
+		dataset
+		where ds_idx
+		= ${value}
+	</select>
+
+
+	<select id="getCatalogueIDX" resultType="int">
+		select
+		COALESCE(max(catalogue_pk),0) from Catalogues
+	</select>
+
+	<insert id="insertCatalogue">
+		INSERT INTO
+		Catalogues
+		(catalogue_pk) values (${idx})
+	</insert>
+
+	<select id="getSimpleAttributeIDX" resultType="int">
+		select
+		COALESCE(max(simpleAttribute_pk),0) from SimpleAttribute
+	</select>
+
+	<insert id="insertSimpleAttribute">
+		INSERT INTO
+		SimpleAttribute
+		(catalogue_fk, simpleAttribute_pk, name, definition,
+		code, alias,
+		valueType, remarks) values
+		(${sa.catalogue_fk},
+		${sa.simpleAttribute_pk},
+		'${sa.name}',
+		'${sa.definition}',
+		'${sa.code}',
+		'${sa.alias}',
+		'${sa.valueType}',
+		'${sa.remarks}')
+	</insert>
+
+	<insert id="insertListedValue">
+		INSERT INTO
+		ListedValues
+		(simpleAttribute_fk, label, definition, code) values
+		(${lv.simpleAttribute_fk},
+		'${lv.label}',
+		'${lv.definition}',
+		${lv.code})
+	</insert>
+
+	<select id="getComplexAttributeIDX" resultType="int">
+		select
+		COALESCE(max(complex_pk),0) from Complex
+	</select>
+
+	<insert id="insertComplexAttribute">
+		INSERT INTO
+		Complex
+		(catalogue_fk, complex_pk, name, definition, code, remarks)
+		values
+		(${ca.catalogue_fk},
+		${ca.complex_pk},
+		'${ca.name}',
+		'${ca.definition}',
+		'${ca.code}',
+		'${ca.remarks}')
+	</insert>
+
+	<select id="getComplexBindingIDX" resultType="int">
+		select
+		COALESCE(max(complexBinding_pk),0) from ComplexBinding
+	</select>
+
+	<insert id="insertComplexBinding">
+		INSERT INTO
+		ComplexBinding
+		(complex_fk, complexBinding_pk, lower, upper,
+		attribute, sequential,
+		nil, infinite) values
+		(${cb.complex_fk},
+		${cb.complexBinding_pk},
+		${cb.lower},
+		${cb.upper},
+		'${cb.attribute}',
+		${cb.sequential},
+		${cb.nil},
+		${cb.infinite})
+	</insert>
+
+	<insert id="insertComplexPermittedValue">
+		INSERT
+		INTO
+		ComplexPermittedValues (complexBinding_fk, value) values
+		(${cp.complexBinding_fk}, ${cp.value})
+	</insert>
+
+	<insert id="insertRole">
+		INSERT INTO Role
+		(catalogue_fk, name, definition,
+		code) values
+		(${role.catalogue_fk},
+		'${role.name}',
+		'${role.definition}',
+		'${role.code}')
+	</insert>
+
+	<insert id="insertInformationAssociation">
+		INSERT
+		INTO
+		InformationAssociation (catalogue_fk, name, definition, code,
+		role)
+		values
+		(${ia.catalogue_fk},
+		'${ia.name}',
+		'${ia.definition}',
+		'${ia.code}',
+		'${ia.role}')
+	</insert>
+
+	<insert id="insertFeatureAssociation">
+		INSERT INTO
+		FeatureAssociations (catalogue_fk, name, definition, code, role1,
+		role2, remarks) values
+		(${fa.catalogue_fk},
+		'${fa.name}',
+		'${fa.definition}',
+		'${fa.code}',
+		'${fa.role1}',
+		'${fa.role2}',
+		'${fa.remarks}')
+	</insert>
+
+	<select id="getInformationTypeIDX" resultType="int">
+		select
+		COALESCE(max(informationType_pk),0) from InformationType
+	</select>
+
+	<insert id="insertInformationType">
+		INSERT INTO
+		InformationType
+		(catalogue_fk, informationType_pk, name, definition,
+		code) values
+		(${it.catalogue_fk},
+		${it.informationType_pk},
+		'${it.name}',
+		'${it.definition}',
+		'${it.code}')
+	</insert>
+
+	<select id="getInformationBindingIDX" resultType="int">
+		select
+		COALESCE(max(informationBinding_pk),0) from InformationBinding
+	</select>
+
+	<insert id="insertInformationBinding">
+		INSERT INTO
+		InformationBinding (informationType_fk, informationBinding_pk, lower,
+		upper, attribute, sequential, nil, infinite) values
+		(${ib.informationType_fk},
+		${ib.informationBinding_pk},
+		${ib.lower},
+		${ib.upper},
+		'${ib.attribute}',
+		${ib.sequential},
+		${ib.nil},
+		${ib.infinite})
+	</insert>
+
+	<insert id="insertInformationPermittedValue">
+		INSERT INTO
+		InformationPermittedValues (informationBinding_fk, value)
+		values
+		(${ipv.informationBinding_fk}, ${ipv.value})
+	</insert>
+
+
+	<select id="getFeatureTypesIDX" resultType="int">
+		select
+		COALESCE(max(featureType_pk),0) from FeatureTypes
+	</select>
+
+
+	<insert id="insertFeatureType">
+		INSERT INTO
+		FeatureTypes
+		(Catalogue_fk, featureType_pk, name, definition, code,
+		remarks, alias,
+		featureusertype) values (${catalogue_fk},
+		${fy.featureType_pk},
+		'${fy.name}',
+		'${fy.definition}',
+		'${fy.code}',
+		'${fy.remarks}',
+		'${fy.alias}',
+		'${fy.featureusertype}')
+	</insert>
+
+	<select id="getAttributeBindingIDX" resultType="int">
+		select
+		COALESCE(max(attributeBinding_pk),0) from AttributeBinding
+	</select>
+
+	<insert id="insertAttributeBinding">
+		INSERT INTO
+		AttributeBinding
+		(featureType_fk, attributeBinding_pk, lower, upper,
+		attribute,
+		sequential, nil, infinite) values
+		(${ab.featureType_fk},
+		${ab.attributeBinding_pk},
+		${ab.lower},
+		${ab.upper},
+		'${ab.attribute}',
+		${ab.sequential},
+		${ab.nil},
+		${ab.infinite})
+	</insert>
+
+	<insert id="insertFeaturePermittedValue">
+		INSERT
+		INTO
+		FeaturePermittedValues (attributeBinding_fk, value) values
+		(${fpv.attributeBinding_fk}, ${fpv.value})
+	</insert>
+
+	<insert id="insertFeatureBinding">
+		INSERT INTO
+		FeatureBinding
+		(featureType_fk, lower, upper, association, role,
+		featureType,
+		roleType, nil, infinite) values
+		(${fb.featureType_fk},
+		${fb.lower},
+		${fb.upper},
+		'${fb.association}',
+		'${fb.role}',
+		'${fb.featureType}',
+		'${fb.roleType}',
+		${fb.nil},
+		${fb.infinite})
+	</insert>
+
+	<insert id="insertFeaturePermittedPrimitive">
+		INSERT INTO
+		FeaturePrimitives (featureType_fk, permittedPrimitives)
+		values
+		(${fpp.featureType_fk}, '${fpp.permittedPrimitives}')
+	</insert>
+
+	<select id="getCatalogueAttributeIDX" resultType="int">
+		select
+		COALESCE(max(CatalogueAttribute_pk),0) from CatalogueAttribute
+	</select>
+
+	<select id="getCatalogueAttributeVersionCheck" resultType="int">
+		select COALESCE(catalogue_fk, 0) from catalogueattribute
+		where camecase
+		like '%versionNumber%' and value = '${fpp}' LIMIT 1
+	</select>
+
+	<insert id="insertCatalogueAttribute">
+		INSERT INTO
+		CatalogueAttribute (catalogue_fk, CatalogueAttribute_pk, camecase,
+		value, parents ) values
+		(${ca.catalogue_fk},
+		${ca.catalogueAttribute_pk},
+		'${ca.camecase}',
+		'${ca.value}',
+		${ca.parents})
+	</insert>
+
+	<select id="selectSimpleAttribute" resultType="SimpleAttribute">
+		Select * From
+		SimpleAttribute where catalogue_fk = ${featureID}
+		order by
+		simpleAttribute_pk
+	</select>
+
+	<select id="selectListedValue" resultType="ListedValue">
+		Select * From
+		ListedValues where simpleAttribute_fk = ${simpleID}
+	</select>
+
+	<select id="selectComplexAttribute"
+		resultType="ComplexAttribute">
+		Select * From Complex where Catalogue_fk = ${featureID}
+		order
+		by complex_pk
+	</select>
+
+	<select id="selectComplexBinding" resultType="ComplexBinding">
+		Select * From
+		ComplexBinding where complex_fk = ${complexID}
+	</select>
+
+	<select id="selectComplexPermittedValue"
+		resultType="ComplexPermittedValue">
+		Select * From ComplexPermittedValues where
+		complexBinding_fk = ${complexbindingID}
+	</select>
+
+	<select id="selectRole" resultType="Role">
+		Select *
+		From Role where
+		Catalogue_fk = ${featureID}
+	</select>
+
+	<select id="selectInformationAssociation"
+		resultType="InformationAssociation">
+		Select * From InformationAssociation where Catalogue_fk =
+		${featureID}
+	</select>
+
+	<select id="selectFeatureAssociation"
+		resultType="FeatureAssociation">
+		Select * From FeatureAssociations where Catalogue_fk =
+		${featureID}
+	</select>
+
+	<select id="selectInformationType" resultType="InformationType">
+		Select * From
+		InformationType where Catalogue_fk = ${featureID}
+		order by
+		informationType_pk
+	</select>
+
+	<select id="selectInformationBinding"
+		resultType="InformationBinding">
+		Select * From InformationBinding where informationType_fk =
+		${informationID}
+	</select>
+
+	<select id="selectInformationPermittedValue"
+		resultType="InformationPermittedValue">
+		Select * From InformationPermittedValues where
+		informationBinding_fk = ${informationID}
+	</select>
+
+	<select id="selectFeatureType" resultType="FeatureType">
+		Select * From
+		FeatureTypes where Catalogue_fk = ${featureID} order by
+		featureType_pk
+	</select>
+
+	<select id="selectFeaturePermittedPrimitive"
+		resultType="FeaturePermittedPrimitive">
+		Select * From FeaturePrimitives where featureType_fk =
+		${featureID}
+	</select>
+
+	<select id="selectAttributeBinding"
+		resultType="AttributeBinding">
+		Select * From AttributeBinding where featureType_fk =
+		${featureID}
+	</select>
+
+	<select id="selectFeaturePermittedValue"
+		resultType="FeaturePermittedValue">
+		Select * From FeaturePermittedValues where
+		attributeBinding_fk = ${attributeBindingID}
+	</select>
+
+
+
+	<select id="selectFeatureBinding" resultType="FeatureBinding">
+		Select * From
+		FeatureBinding where featureType_fk =
+		${featureID}
+	</select>
+
+</mapper>

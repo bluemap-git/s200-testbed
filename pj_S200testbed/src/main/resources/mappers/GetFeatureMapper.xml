@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PJ_s200Testbed.persistence.PointDAO">
+	<select id="pointsearch" resultType="GetFeatureDTO">
+		  
+	   select
+			distinct attr.value as name,
+			attr.attributetype as featureType,
+			st_x(ST_Transform(p.geom, 4326)) x,
+			st_y(ST_Transform(p.geom, 4326)) y,
+			id
+		from 
+			(select p.*, f.ds_idx ,d.id
+				from 
+					point p, 
+					feature f,
+					dataset d
+				where p.f_idx = f.f_idx
+				and d.ds_idx = f.ds_idx
+				and f.ds_idx in
+				<foreach collection="map.numarray" item="item" index="index"  open="(" close=")" separator=",">
+                    ${item}
+                </foreach>
+         	     <if test="map.type == 'circle'">
+				 and ST_DWithin(ST_Transform(ST_GeomFromText('POINT(${map.point})', 4326), 3785), geom, 10000.0)) p,
+				 </if>
+				 <if test="map.type == 'line'"> 
+				 and ST_DWithin(ST_Transform(ST_GeomFromText('linestring(${map.polylist})', 4326), 3785), geom, 10000.0)) p,
+				</if>
+				<if test="map.type == 'rect'"> 
+				 and ST_Intersects(ST_Transform(ST_GeomFromText('polygon((${map.rectlist}))', 4326), 3785), geom)) p,
+				</if>	 	
+					(SELECT
+						f_idx,
+							CASE Name when 'objectNameInNationalLanguage' THEN value
+						ELSE ''
+						END as value,
+						attributeType
+					FROM 
+						attribute WHERE a_idx
+					IN (
+						SELECT max(a_idx)
+						FROM
+							attribute where name = 'objectNameInNationalLanguage'
+						or
+							name = 'idCode' GROUP BY f_idx
+					) order by f_idx asc
+			)
+		attr where p.f_idx = attr.f_idx;
+
+	</select>
+</mapper>

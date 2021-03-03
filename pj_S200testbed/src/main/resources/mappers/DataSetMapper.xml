@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PJ_s200Testbed.persistence.DatasetDAO">
+	<select id="dataselect" resultType="DatasetDTO">
+		<include refid="paging_header" />
+		select
+		Distinct d.ds_idx, d.id, s.productidentifier, a.value
+		from
+		dataset d, datasetidentificationinformation s,
+		(select *
+		from
+		catalogueattribute
+		where camecase like '%versionNumber%'
+		) a
+		<include refid="search" />
+		<include refid="paging_footer" />
+	</select>
+	<sql id="paging_header">
+		select *
+		from (
+		select ( row_number() over()) as rownum, C.*
+		FROM(
+	</sql>
+	<sql id="paging_footer">
+		) C
+		) x where rownum between #{map.start} AND #{map.end}
+	</sql>
+
+	<select id="countArticle" resultType="Integer">
+		select count(*)
+		from
+		dataset d
+		, datasetidentificationinformation s
+		,
+		(select *
+		from catalogueattribute
+		where camecase like '%versionNumber%'
+		) a
+
+		<include refid="search"></include>
+	</select>
+
+	<sql id="search">
+		<choose>
+			<when test="map.keyword !=''"><!-- 검색 옵션이 있을경우만 -->
+				where
+				d.ds_idx = s.ds_idx
+				and d.catalogue_fk = a.catalogue_fk
+				and d.id
+				LIKE #{map.keyword}
+			</when>
+			<otherwise>
+				where
+				d.ds_idx = s.ds_idx
+				and d.catalogue_fk =
+				a.catalogue_fk
+
+			</otherwise>
+		</choose>
+	</sql>
+	<select id="list" resultType="DatasetDTO">
+		select
+		Distinct d.ds_idx,
+		d.id,
+		s.productidentifier,
+		a.value from dataset d,
+		datasetidentificationinformation s,
+		(select * from catalogueattribute
+		where camecase like '%versionNumber%') a
+
+		where d.ds_idx = s.ds_idx and
+		d.catalogue_fk = a.catalogue_fk
+
+
+	</select>
+
+	<delete id="deldata">
+		delete from dataset
+		where ds_idx = #{value}
+
+	</delete>
+
+	<select id="lastrownum" resultType="int">
+		SELECT
+		MAX(ds_idx) FROM
+		dataset;
+
+
+	</select>
+	<insert id="createdate">
+		insert into public.dataset
+		(catalogue_fk,
+		ds_idx,
+		id)
+		values
+		('1',
+		#{rownum},
+		#{name});
+
+		insert into public.datasetidentificationinformation
+		(ds_idx,
+		encodingspecification,
+		encodingspecificationedition,
+		productidentifier,
+		productedition,
+		datasetfileidentifier,
+		datasettitle,
+		datasetlanguage,
+		datasettopiccategory)
+
+		values
+		(#{rownum},
+		'S-100 Part 10b',
+		'1.0', 'S-201',
+		'1.0.0', 'S-201_TDS',
+		'test201',
+		'kr',
+		'utilitiesCommunication');
+
+	</insert>
+
+	<update id="update">
+		UPDATE public.dataset
+		SET
+		id = #{newname}
+		WHERE
+		ds_idx = #{num}
+
+	</update>
+
+	<select id="featursearch" resultType="FeatureDTO">
+		select
+		f.f_idx,
+		featuretype,
+		st_x(ST_Transform(geom, 4326)) x,
+		st_y(ST_Transform(geom, 4326)) y,
+		a.value
+		from feature f inner join
+		(select
+		distinct p.f_idx,
+		p.geom,
+		a.value
+		from point p left outer join
+		(select
+		f_idx,
+		value
+		from
+		attribute where
+		(name = 'colour' and attributetype like '%Light%')
+		or
+		(name like '%Shape%'))
+		a on p.f_idx = a.f_idx)
+		a on f.f_idx = a.f_idx
+		where
+		f.ds_idx = #{num};
+	</select>
+
+	<select id="getDataSetIDX" resultType="int">
+		SELECT
+		COALESCE(max(ds_idx),0) from dataset
+	</select>
+
+	<insert id="insertDataSet">
+		INSERT INTO dataset
+		(catalogue_fk,
+		ds_idx, id) values (${DataSet.catalogue_fk}, ${DataSet.ds_idx},
+		'${DataSet.id}')
+	</insert>
+
+
+	<insert id="insertBoundedBy">
+		INSERT INTO boundedBy
+		(ds_idx,
+		srsName, lowerCorner, upperCorner)
+		values (${BoundedBy.ds_idx},
+		'${BoundedBy.srsname}',
+		ST_GeomFromText('POINT(${BoundedBy.lowercorner})',
+		26910),
+		ST_GeomFromText('POINT(${BoundedBy.uppercorner})', 26910))
+	</insert>
+
+	<insert id="insertDatasetIdentificationInformation">
+		INSERT INTO
+		DatasetIdentificationInformation ( ds_idx,
+		encodingSpecification,
+		encodingSpecificationEdition,
+		productIdentifier, productEdition,
+		applicationProfile,
+		datasetFileIdentifier, datasetTitle,
+		datasetReferenceDate,
+		datasetLanguage, datasetTopicCategory )
+		VALUES (
+		${DatasetIdentificationInformation.ds_idx},
+		'${DatasetIdentificationInformation.encodingSpecification}',
+		'${DatasetIdentificationInformation.encodingSpecificationEdition}',
+		'${DatasetIdentificationInformation.productIdentifier}',
+		'${DatasetIdentificationInformation.productEdition}',
+		'${DatasetIdentificationInformation.applicationProfile}',
+		'${DatasetIdentificationInformation.datasetFileIdentifier}',
+		'${DatasetIdentificationInformation.datasetTitle}',
+		'${DatasetIdentificationInformation.datasetReferenceDate}',
+		'${DatasetIdentificationInformation.datasetLanguage}',
+		'${DatasetIdentificationInformation.datasetTopicCategory}')
+	</insert>
+
+	<insert id="insertDatasetStructureInformation">
+		INSERT INTO
+		DatasetStructureInformation ( ds_idx,
+		datasetCoordOriginX,
+		datasetCoordOriginY, datasetCoordOriginZ,
+		coordMultFactorX,
+		coordMultFactorY, coordMultFactorZ )
+		VALUES (
+		${DatasetStructureInformation.ds_idx},
+		${DatasetStructureInformation.datasetCoordOriginX},
+		${DatasetStructureInformation.datasetCoordOriginY},
+		${DatasetStructureInformation.datasetCoordOriginZ},
+		${DatasetStructureInformation.coordMultFactorX},
+		${DatasetStructureInformation.coordMultFactorY},
+		${DatasetStructureInformation.coordMultFactorZ} )
+	</insert>
+
+	<select id="getFeatureIDX" resultType="int">
+		SELECT
+		COALESCE(max(f_idx),0) from feature
+	</select>
+
+	<insert id="insertFeature">
+		INSERT INTO feature
+		(ds_idx, f_idx, featuretype)
+		VALUES (
+		${feat.ds_idx},
+		${feat.f_idx},
+		'${feat.featuretype}')
+	</insert>
+
+	<update id="updateFeatureTypeImember">
+		update
+		feature set type =
+		'imember' where f_idx = ${idx}
+	</update>
+
+	<insert id="insertAssociation">
+		INSERT INTO
+		association ( f_idx,
+		xid, xhref, xrole ) VALUES (${ass.f_idx}, '${ass.xid}',
+		${ass.xhref} ,
+		'${ass.xrole}' )
+	</insert>
+
+	<update id="updateFeatureTypePoint">
+		update feature
+		set type = 'Point' where f_idx = ${idx}
+	</update>
+
+	<insert id="insertPoint">
+		INSERT INTO ${geom.type}
+		(f_idx, geom)
+		VALUES (${geom.idx},
+		ST_Transform(ST_GeomFromText('${geom.type}(${geom.value})',
+		${geom.srid}), 3785))
+	</insert>
+
+	<update id="updateFeatureTypePolygon">
+		update
+		feature set type = 'Polygon' where f_idx =
+		${idx}
+	</update>
+
+	<insert id="insertPolygon">
+		INSERT INTO ${geom.type}
+		(f_idx, geom)
+		VALUES (${geom.idx},
+		ST_Transform(ST_GeomFromText('${geom.type}((${geom.value}))',
+		${geom.srid}), 3785))
+	</insert>
+
+	<select id="getAttributeIDX" resultType="int">
+		SELECT
+		COALESCE(max(a_idx),0) from attribute
+	</select>
+
+	<insert id="insertAttribute">
+		INSERT INTO attribute
+		( f_idx, a_idx, name, value,
+		parents, attributetype )
+		VALUES (${attr.f_idx},
+		${attr.a_idx},
+		'${attr.name}',
+		'${attr.value}',
+		${attr.parents},
+		'${attr.attributetype}' )
+	</insert>
+
+
+	<select id="getC_idx" resultType="String">
+		select
+		catalogue_fk from dataset
+		where ds_idx =
+		${ds_idx}
+	</select>
+
+	<select id="getUploadFileName" resultType="String">
+		select
+		filename from
+		uploaddata where ds_idx = ${ds_idx}
+	</select>
+
+
+	<select id="getUploadFilePath" resultType="String">
+		select
+		filepath from
+		uploaddata where ds_idx = ${ds_idx}
+	</select>
+
+	<select id="selectBoundedBy" resultType="BoundedBy">
+		select srsname,
+		st_x(st_centroid(st_transform(lowercorner,
+		26910))) as
+		LX,
+		st_y(st_centroid(st_transform(lowercorner, 26910))) as
+		LY,
+		st_x(st_centroid(st_transform(uppercorner, 26910))) as UX,
+		st_y(st_centroid(st_transform(uppercorner, 26910))) as UY from
+		boundedby where ds_idx=${ds_idx}
+	</select>
+
+	<select id="selectDatasetIdentificationInformation"
+		resultType="DatasetIdentificationInformation">
+		select * from
+		datasetidentificationinformation where ds_idx
+		= ${ds_idx}
+	</select>
+
+	<select id="selectDatasetStructureInformation"
+		resultType="DatasetStructureInformation">
+		select * from
+		datasetstructureinformation where ds_idx =
+		${ds_idx}
+	</select>
+
+	<select id="selectFeature" resultType="Feature">
+		select * from feature
+		where ds_idx = ${ds_idx}
+	</select>
+
+	<select id="selectAssociation" resultType="Association">
+		select * from
+		association where f_idx = ${f_idx}
+	</select>
+
+	<select id="selectAttribute" resultType="Attribute">
+		select * from attribute
+		where f_idx = ${f_idx}
+	</select>
+
+	<select id="selectPoint" resultType="String">
+		select
+		ST_AsText(st_transform(geom, 4326)) as geom from point where f_idx =
+		${f_idx}
+	</select>
+
+	<select id="selectPolygon" resultType="String">
+		select
+		ST_AsText(st_transform(geom, 4326)) as geom from polygon where
+		f_idx =
+		${f_idx}
+	</select>
+
+	<select id="getSaveOptionIDX" resultType="int">
+		SELECT
+		COALESCE(max(so_idx),0) from saveoption
+	</select>
+
+	<select id="getSelectSaveOption" resultType="SaveOption">
+		select * from
+		saveoption where so_idx = ${so_idx}
+	</select>
+
+	<select id="getSelectDatasetName" resultType="String">
+		select
+		datasetfileidentifier from
+		datasetidentificationinformation
+		where ds_idx
+		= ${ds_idx}
+	</select>
+
+	<select id="getSelectSaveFileName" resultType="String">
+		select filename
+		from uploaddata where ds_idx = ${ds_idx}
+	</select>
+
+	<select id="getUploadDataIDX" resultType="int">
+		SELECT
+		COALESCE(max(uploadData_pk),0) from uploadData
+	</select>
+
+	<select id="selectDataset" resultType="com.PJ_s200Testbed.model.DataSet">
+		SELECT * from dataset where ds_idx = ${ds_idx}
+	</select>
+
+	<insert id="insertUploadData">
+		INSERT INTO
+		uploadData
+		(uploadData_pk, ds_idx, fileName, filePath) values (
+		${ud.uploadData_pk},
+		${ud.ds_idx},
+		'${ud.fileName}',
+		'${ud.filePath}')
+	</insert>
+	
+	
+	
+	<select id="fitbounds" resultType="FitBounds">
+		SELECT ds_idx as id, ST_Y(lowercorner) as lowercorner_x, ST_X(lowercorner) as lowercorner_y,  ST_Y(uppercorner) as uppercorner_x ,  ST_X(uppercorner) as uppercorner_y  					  
+		FROM public.boundedby where ds_idx= ${ds_idx} 
+	</select>
+
+
+</mapper>
