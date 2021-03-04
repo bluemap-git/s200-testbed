@@ -108,6 +108,7 @@ public class Featurecontroller {
 	    // [1,2,3] [4,5,6] 
 	    ArrayList<List<Integer>> delarray = fService.childarray(featureDelArray);
 	    
+
 		DataSet ds = fService.selectDataset(featureDelArray.get(0));
 		String dsName = ds.ds_idx + ". " + ds.id;
 		if (dsName != null && !dsName.equals("")) {
@@ -117,8 +118,9 @@ public class Featurecontroller {
 				return;
 			xService.deleteNode(path, delarray);
 		}
-		fService.featureDelete(featureDelArray);
-		 
+	    
+	 
+		fService.featureDelete(delarray);
 }
 
     @ResponseBody

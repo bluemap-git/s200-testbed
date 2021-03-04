@@ -28,13 +28,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<delete id="featureDelete">
-
-		<foreach collection="featureDelArray" item="item">
-			delete from feature
-			where f_idx = #{item};
-		</foreach>
+	delete from feature where f_idx in
+		<foreach item="item" collection="featureDelArray" open="(" close=")" separator=",">  #{item} </foreach>
 	</delete>
-
 
 	<select id="countArticle" resultType="Integer">
 		select count (*) from (

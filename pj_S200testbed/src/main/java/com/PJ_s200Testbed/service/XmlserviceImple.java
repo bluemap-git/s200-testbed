@@ -493,19 +493,26 @@ public class XmlserviceImple implements Xmlservice {
 	public boolean deleteNode(String path, ArrayList<List<Integer>> idList) {
 
 		try {
-			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-			DocumentBuilder parser = f.newDocumentBuilder();
-			Document document = parser.parse(path);
-			XPath xpath = XPathFactory.newInstance().newXPath();
-			for (List<Integer> id : idList) {
-				Node col2 = (Node) xpath.evaluate("//*[@id='" + id + "']", document, XPathConstants.NODE);
-				Node pCol = col2.getParentNode();
-				Node pNode = pCol.getParentNode();
-				pNode.removeChild(pCol);
-			}
-			DOMSource xmlDOM = new DOMSource(document);
-			StreamResult xmlFile = new StreamResult(new File(path));
-			TransformerFactory.newInstance().newTransformer().transform(xmlDOM, xmlFile);
+			
+			List<Integer> featureList = null;
+			for(int a =0; a < idList.size(); a++) {
+				featureList = idList.get(a);
+				
+				DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+				DocumentBuilder parser = f.newDocumentBuilder();
+				Document document = parser.parse(path);
+				XPath xpath = XPathFactory.newInstance().newXPath();
+				for (Integer id : featureList) {
+					Node col2 = (Node) xpath.evaluate("//*[@id='" + id + "']", document, XPathConstants.NODE);
+					Node pCol = col2.getParentNode();
+					Node pNode = pCol.getParentNode();
+					pNode.removeChild(pCol);
+				}
+				DOMSource xmlDOM = new DOMSource(document);
+				StreamResult xmlFile = new StreamResult(new File(path));
+				TransformerFactory.newInstance().newTransformer().transform(xmlDOM, xmlFile);
+			};
+			
 		} catch (Exception e) {
 			return false;
 		}

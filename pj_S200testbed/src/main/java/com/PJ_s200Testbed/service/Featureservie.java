@@ -15,7 +15,7 @@ public interface Featureservie {
 	public List<FeatureDTO> featureselect(int num, String keyword, int start, int end);
 	public List<FeatureDTO> featuresearch(int num, int featureid);
 	public List<FeatureDTO> featureDetail(int featureid);
-	public void featureDelete(List<Integer> featureDelArray);
+	public void featureDelete(ArrayList<List<Integer>> delarray);
 	public void DeatilUpdate( String value ,  int FeaturePk );
 	public DataSet selectDataset(int featureID);
 	public Attribute selectAttribute(int attributeID);
@@ -23,4 +23,5 @@ public interface Featureservie {
 	public String selectFeatureType(int featureid);
 	public int selectFeatureHref(int featureid);
 	public  ArrayList<List<Integer>>  childarray(List<Integer> featureDelArray);
+	
 }

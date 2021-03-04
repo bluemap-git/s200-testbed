@@ -62,10 +62,14 @@ public class FeatureserviceImpl implements Featureservie {
 	}
 
 	@Override
-	public void featureDelete(List<Integer> featureDelArray) {
+	public void featureDelete(ArrayList<List<Integer>> delarray) {
+		List<Integer> featureList = null;
 		
-		log.info("서비스 ");
-		fDao.featureDelete(featureDelArray);
+		for(int a =0; a < delarray.size(); a++) {
+			featureList = delarray.get(a);
+			fDao.featureDelete(featureList);
+		}
+		
 	}
 
 	@Override
@@ -101,7 +105,10 @@ public class FeatureserviceImpl implements Featureservie {
 	@Override
 	public ArrayList<List<Integer>> childarray(List<Integer> featureDelArray) {
 		
+
+		
 		ArrayList<List<Integer>> mGroupList = new ArrayList<List<Integer>>();
+		
 		for(int i=0; i<=featureDelArray.size()-1 ;i++) {
 			if(featureDelArray.size() != 0) {
 				int test = featureDelArray.get(i);
@@ -109,6 +116,7 @@ public class FeatureserviceImpl implements Featureservie {
 				mGroupList.add(childlist);
 			}
 		}
+		log.info("test",mGroupList);
 		
 		return mGroupList;
 		//return fDao.selectchild(featureDelArray);

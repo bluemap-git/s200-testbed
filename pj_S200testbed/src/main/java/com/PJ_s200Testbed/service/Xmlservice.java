@@ -11,7 +11,7 @@ import com.PJ_s200Testbed.domain.UploadData;
 public interface Xmlservice {
 	public int readFeatureCatalogue();
 	public String readXml(String path);
-	public boolean deleteNode(String path, ArrayList<List<Integer>> delarray);
+	public boolean deleteNode(String path, ArrayList<List<Integer>> getArray);
 	@Transactional
 	public int readDataSet(int catalogue_fk, String tableName) ;
 	public int getUploadDataIDX();
