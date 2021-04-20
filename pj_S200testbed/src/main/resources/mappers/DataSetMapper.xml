@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="lastrownum" resultType="int">
 		SELECT
-		MAX(ds_idx) FROM
+		coalesce(MAX(ds_idx), 0) FROM
 		dataset;
 
 
